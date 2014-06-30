@@ -1,8 +1,8 @@
-### three-vr-renderer
+## three-vr-renderer
 
 VR renderer for THREE.js utilizing the upcoming VR APIs in popular browsers.
 
-#### Overview
+### Overview
 
 _Because Firefox is the sole browser with this support available, this short tutorial will be specific to Firefox._
 
