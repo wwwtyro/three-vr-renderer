@@ -47,3 +47,7 @@ camera.quaternion.set(state.orientation.x,
                       state.orientation.w);
 vrrenderer.render(scene, camera);
 ```
+
+### Credits
+
+[Vlad Vukicevic](https://twitter.com/vvuk)
