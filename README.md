@@ -8,7 +8,7 @@ _Because Firefox is the sole browser with this support available, this short tut
 
 ##### Create the HMD and sensor objects
 
-{% highlight javascript %}
+```javascript
 window.addEventListener("load", function() {
     navigator.mozGetVRDevices(vrDeviceCallback);
 }, false);
@@ -28,22 +28,22 @@ function vrDeviceCallback(vrdevs) {
         }
     }
 }
-{% endhighlight %}
+```
 
 ##### Create a VRRenderer
 
-{% highlight javascript %}
+```javascript
 renderer = new THREE.WebGLRenderer();
 vrrenderer = new THREE.VRRenderer(renderer, vrHMD);
-{% endhighlight %}
+```
 
 ##### Orient the camera and render
 
-{% highlight javascript %}
+```javascript
 var state = vrPosDev.getState();
 camera.quaternion.set(state.orientation.x, 
                       state.orientation.y, 
                       state.orientation.z, 
                       state.orientation.w);
 vrrenderer.render(scene, camera);
-{% endhighlight %}
+```
