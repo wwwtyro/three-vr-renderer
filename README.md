@@ -1,16 +1,18 @@
 ## three-vr-renderer
 
-VR renderer for THREE.js utilizing the upcoming VR APIs in popular browsers.
+VR renderer for THREE.js utilizing the upcoming WebVR API in popular browsers.
 
 ### Overview
-
-_Because Firefox is the sole browser with this support available, this short tutorial will be specific to Firefox._
 
 ##### Create the HMD and sensor objects
 
 ```javascript
 window.addEventListener("load", function() {
-    navigator.mozGetVRDevices(vrDeviceCallback);
+    if (navigator.getVRDevices) {
+        navigator.getVRDevices().then(vrDeviceCallback);
+    } else if (navigator.mozGetVRDevices) {
+        navigator.mozGetVRDevices(vrDeviceCallback);
+    }
 }, false);
 
 function vrDeviceCallback(vrdevs) {
@@ -23,29 +25,50 @@ function vrDeviceCallback(vrdevs) {
     for (var i = 0; i < vrdevs.length; ++i) {
         if (vrdevs[i] instanceof PositionSensorVRDevice &&
             vrdevs[i].hardwareUnitId == vrHMD.hardwareUnitId) {
-            vrPosDev = vrdevs[i];
+            vrHMDSensor = vrdevs[i];
             break;
         }
     }
+    initScene();
+    initRenderer();
+    render();
 }
 ```
 
 ##### Create a VRRenderer
 
 ```javascript
-renderer = new THREE.WebGLRenderer();
-vrrenderer = new THREE.VRRenderer(renderer, vrHMD);
+var renderer = new THREE.WebGLRenderer();
+var vrrenderer = new THREE.VRRenderer(renderer, vrHMD);
+```
+
+##### Go Fullscreen
+
+```javascript
+window.addEventListener("keypress", function(e) {
+    if (e.charCode == 'f'.charCodeAt(0)) {
+        if (renderCanvas.mozRequestFullScreen) {
+            renderCanvas.mozRequestFullScreen({
+                vrDisplay: vrHMD
+            });
+        } else if (renderCanvas.webkitRequestFullscreen) {
+            renderCanvas.webkitRequestFullscreen({
+                vrDisplay: vrHMD,
+            });
+        }
+    }
+}, false);
 ```
 
 ##### Orient the camera and render
 
 ```javascript
-var state = vrPosDev.getState();
-camera.quaternion.set(state.orientation.x, 
-                      state.orientation.y, 
-                      state.orientation.z, 
-                      state.orientation.w);
-vrrenderer.render(scene, camera);
+    var state = vrHMDSensor.getState();
+    camera.quaternion.set(state.orientation.x, 
+                          state.orientation.y, 
+                          state.orientation.z, 
+                          state.orientation.w);
+    vrrenderer.render(scene, camera);
 ```
 
 ### Credits
