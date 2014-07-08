@@ -74,3 +74,4 @@ window.addEventListener("keypress", function(e) {
 ### Credits
 
 [Vlad Vukicevic](https://twitter.com/vvuk)
+[Brandon Jones](https://twitter.com/Tojiro)
