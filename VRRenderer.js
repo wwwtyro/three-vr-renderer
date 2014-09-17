@@ -70,8 +70,9 @@ THREE.VRRenderer = function(renderer, hmd) {
         cameraLeft.position.sub(right.clone().multiplyScalar(self.halfIPD));
         cameraRight.position.add(right.clone().multiplyScalar(self.halfIPD));
         renderer.enableScissorTest(true);
-        var width = renderer.domElement.width / 2;
-        var height = renderer.domElement.height;
+        var dpr = renderer.devicePixelRatio;
+        var width = renderer.domElement.width / 2 / dpr;
+        var height = renderer.domElement.height / dpr;
         renderer.setViewport(0, 0, width, height);
         renderer.setScissor(0, 0, width, height);
         renderer.render(scene, cameraLeft);
