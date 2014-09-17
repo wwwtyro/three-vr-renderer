@@ -65,7 +65,6 @@ THREE.VRRenderer = function(renderer, hmd) {
     }
 
     var right  = new THREE.Vector3();
-    var scaled = new THREE.Vector3();
 
     var cameraLeft  = new THREE.PerspectiveCamera();
     var cameraRight = new THREE.PerspectiveCamera();
@@ -74,13 +73,14 @@ THREE.VRRenderer = function(renderer, hmd) {
         self.FovToProjection(cameraLeft .projectionMatrix, self.fovLeft , true, camera.near, camera.far);
         self.FovToProjection(cameraRight.projectionMatrix, self.fovRight, true, camera.near, camera.far);
 
-        right.set(1, 0, 0);
+        right.set(self.halfIPD, 0, 0);
         right.applyQuaternion(camera.quaternion);
 
-        scaled.copy(right).multiplyScalar(self.halfIPD);
+        cameraLeft .position.copy(camera.position).sub(right);
+        cameraRight.position.copy(camera.position).add(right);
 
-        cameraLeft .position.copy(camera.position).sub(scaled);
-        cameraRight.position.copy(camera.position).add(scaled);
+        cameraLeft .quaternion.copy(camera.quaternion);
+        cameraRight.quaternion.copy(camera.quaternion);
 
         var dpr    = renderer.devicePixelRatio;
         var width  = renderer.domElement.width  / 2 / dpr;
