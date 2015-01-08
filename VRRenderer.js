@@ -7,8 +7,13 @@ THREE.VRRenderer = function(renderer, hmd) {
     self.initialize = function() {
         var et = hmd.getEyeTranslation("left");
         self.halfIPD = new THREE.Vector3(et.x, et.y, et.z).length();
-        self.fovLeft = hmd.getRecommendedEyeFieldOfView("left");
-        self.fovRight = hmd.getRecommendedEyeFieldOfView("right");
+        if ('getCurrentEyeFieldOfView' in hmd) {
+            self.fovLeft = hmd.getCurrentEyeFieldOfView("left");
+            self.fovRight = hmd.getCurrentEyeFieldOfView("right");
+        } else {
+            self.fovLeft = hmd.getRecommendedEyeFieldOfView("left");
+            self.fovRight = hmd.getRecommendedEyeFieldOfView("right");
+        }
     }
 
     self.FovToNDCScaleOffset = function(fov) {
