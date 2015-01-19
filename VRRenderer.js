@@ -83,6 +83,7 @@ THREE.VRRenderer = function(renderer, hmd) {
         renderer.setViewport(width, 0, width, height);
         renderer.setScissor(width, 0, width, height);
         renderer.render(scene, cameraRight);
+        renderer.enableScissorTest(false);
     }
 
     self.initialize();
